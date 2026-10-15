@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Tasks">
-<title>Tasks</title>
+<title>Tasks v.1a</title>
 <link rel="manifest" id="manifest-link">
 <style>
 :root{
@@ -226,7 +226,7 @@ input[type=datetime-local]{color-scheme:dark}
     <label for="keyin">API Key</label>
     <input class="field" id="keyin" type="password" placeholder="Paste your Gemini API key" autocomplete="off">
     <label for="modelin">Model</label>
-    <input class="field" id="modelin" placeholder="gemini-2.5-flash">
+    <input class="field" id="modelin" placeholder="gemini-3.5-flash-lite">
     <div class="row">
       <button class="btn ghost" id="keyclear">Remove Key</button>
       <button class="btn ghost" id="keycancel">Cancel</button>
@@ -274,7 +274,7 @@ const K = {tasks:'bt_tasks', chat:'bt_chat', key:'bt_gemini_key', model:'bt_gemi
 const load = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } };
 const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} };
 const getKey = () => { try { return localStorage.getItem(K.key) || ''; } catch(e){ return ''; } };
-const getModel = () => { try { return localStorage.getItem(K.model) || 'gemini-2.5-flash'; } catch(e){ return 'gemini-2.5-flash'; } };
+const getModel = () => { try { const m = localStorage.getItem(K.model); return (!m || m === 'gemini-3.5-flash-lite' || m === 'gemini-2.5-flash') ? 'gemini-3.5-flash-lite' : m; } catch(e){ return 'gemini-3.5-flash-lite'; } };
 
 let tasks = load(K.tasks, []);
 let rules = load(K.rules, []);
@@ -649,7 +649,7 @@ modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 $('#keysave').addEventListener('click', () => {
   try {
     localStorage.setItem(K.key, $('#keyin').value.trim());
-    localStorage.setItem(K.model, $('#modelin').value.trim() || 'gemini-2.5-flash');
+    localStorage.setItem(K.model, $('#modelin').value.trim() || 'gemini-3.5-flash-lite');
   } catch(e){}
   closeModal();
 });
